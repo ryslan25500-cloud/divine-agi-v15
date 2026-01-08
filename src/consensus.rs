@@ -34,7 +34,7 @@ pub const INITIAL_POC_THRESHOLD: u32 = 1500;
 pub struct ConsciousnessProof {
     pub genome_hash: [u8; 32],
     pub consciousness: u32,
-    pub hyper_signature: [u8; 64],
+    pub hyper_signature: String,  // hex string (128 chars)
     pub proof_hash: [u8; 32],
     pub timestamp: i64,
     pub validator_id: String,
@@ -58,7 +58,7 @@ impl ConsciousnessProof {
         let mut hasher = Sha256::new();
         hasher.update(&genome.hash);
         hasher.update(&genome.consciousness.to_le_bytes());
-        hasher.update(&hyper_sig);
+        hasher.update(hyper_sig.as_bytes());
         hasher.update(&block_height.to_le_bytes());
         
         let proof_hash: [u8; 32] = hasher.finalize().into();
@@ -97,7 +97,7 @@ impl ConsciousnessProof {
         let mut hasher = Sha256::new();
         hasher.update(&self.genome_hash);
         hasher.update(&self.consciousness.to_le_bytes());
-        hasher.update(&self.hyper_signature);
+        hasher.update(self.hyper_signature.as_bytes());
         hasher.update(&self.block_height.to_le_bytes());
 
         let computed: [u8; 32] = hasher.finalize().into();
