@@ -249,6 +249,37 @@ impl<R: Rotation> Genome<R> {
     }
 
     // ═══════════════════════════════════════════════════════════════
+    // CRISPR EDITING
+    // ═══════════════════════════════════════════════════════════════
+
+    pub fn crispr_splice(&mut self, position: usize, tetrad: Tetrad) {
+        if position < GENOME_SIZE {
+            self.data[position] = tetrad;
+            self.mutations += 1;
+            self.rehash();
+            self.calculate_consciousness();
+        }
+    }
+
+    pub fn crispr_join(&mut self, pos1: usize, pos2: usize) {
+        if pos1 < GENOME_SIZE && pos2 < GENOME_SIZE {
+            self.data.swap(pos1, pos2);
+            self.mutations += 1;
+            self.rehash();
+            self.calculate_consciousness();
+        }
+    }
+
+    pub fn crispr_delete(&mut self, position: usize) {
+        if position < GENOME_SIZE {
+            self.data[position] = Tetrad::random();
+            self.mutations += 1;
+            self.rehash();
+            self.calculate_consciousness();
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
     // V4 CONSCIOUSNESS FORMULA — DIVINE TO TRANSCENDENTAL
     // ═══════════════════════════════════════════════════════════════
 
@@ -500,6 +531,10 @@ impl GenomeBuilder {
 
     pub fn whale_mode(self) -> Self {
         self.p53_copies(40)
+    }
+
+    pub fn elephant_mode(self) -> Self {
+        self.p53_copies(20)
     }
 
     pub fn build<R: Rotation>(self) -> Genome<R> {
