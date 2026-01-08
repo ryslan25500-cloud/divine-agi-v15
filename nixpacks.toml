@@ -1,17 +1,19 @@
 # Nixpacks configuration for Railway
-# Forces nightly Rust to support edition2024
+# Uses nightly Rust to support edition2024
 
 [phases.setup]
-nixPkgs = ["rustup"]
+nixPkgs = ["gcc", "pkg-config", "openssl"]
 
 [phases.install]
 cmds = [
-    "rustup default nightly",
-    "rustup update nightly"
+    "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly",
+    ". $HOME/.cargo/env && rustup default nightly",
+    ". $HOME/.cargo/env && cargo fetch"
 ]
 
 [phases.build]
-cmds = ["cargo build --release"]
+cmds = [". $HOME/.cargo/env && cargo build --release"]
 
 [start]
 cmd = "./target/release/divine-agi server --port ${PORT:-8080}"
+

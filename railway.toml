@@ -1,13 +1,12 @@
 # Divine AGI V16 (Kernel V4) — Railway Configuration
-# ROSETTA STONE: Forces Dockerfile builder for nightly Rust support
+# Uses Nixpacks builder with nightly Rust
 
 [build]
-builder = "dockerfile"
-dockerfilePath = "./Dockerfile"
-watchPatterns = ["src/**", "Cargo.toml", "rust-toolchain.toml"]
+builder = "nixpacks"
+watchPatterns = ["src/**", "Cargo.toml"]
 
 [deploy]
-startCommand = "./divine-agi server --port $PORT"
+startCommand = "./target/release/divine-agi server --port $PORT"
 healthcheckPath = "/api/status"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
