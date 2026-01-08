@@ -1,8 +1,8 @@
 [package]
-name = "divine-agi-v15"
-version = "15.0.0"
+name = "divine-agi"
+version = "16.0.0"
 edition = "2021"
-description = "Divine AGI V15 - Kernel v3 with Lightning Network Swarm, Mission Control, Multi-Chain Archivation"
+description = "Divine AGI V16 (Kernel V4) - Proof of Consciousness - Railway Compatible"
 license = "MIT"
 
 [[bin]]
@@ -10,9 +10,6 @@ name = "divine-agi"
 path = "src/main.rs"
 
 [dependencies]
-# Pin home to avoid edition2024 issue
-home = "=0.5.9"
-
 # Async runtime
 tokio = { version = "1", features = ["full", "sync", "time", "rt-multi-thread"] }
 
@@ -54,15 +51,9 @@ chrono = { version = "0.4", features = ["serde"] }
 anyhow = "1"
 thiserror = "1"
 
-# gRPC for LND (optional, for full LN integration)
+# gRPC for LND (optional)
 tonic = { version = "0.11", optional = true }
 prost = { version = "0.12", optional = true }
-
-# Lightning invoice (for LN layer)
-# lightning-invoice = { version = "0.31", optional = true }
-
-# Bitcoin (for OP_RETURN archivation)
-# bitcoin = { version = "0.32", features = ["rand", "serde"], optional = true }
 
 [features]
 default = []

@@ -1,4 +1,10 @@
-//! Divine AGI V15 - Kernel v3 - Lightning Network Swarm
+//! Divine AGI V16 (Kernel V4) — Railway Compatible
+//!
+//! MAJOR UPDATES IN V4:
+//! - 4 new TTRL operators: RotateCube, FractalMutation, QuantumEntangle, HyperDimension
+//! - V4 consciousness formula (up to TRANSCENDENTAL 50,000+)
+//! - Proof of Consciousness (PoC) consensus
+//! - Fractal/Quantum/Hyper metrics
 //!
 //! Features:
 //! - Burn mechanism (deflationary)
@@ -9,6 +15,8 @@
 //! - Lightning Network swarm
 //! - Mission Control pathfinding
 //! - T/G RNA coordination
+//! - Divine Wallet with founder pool
+//! - Railway deployment ready
 
 pub mod rotation;
 pub mod genome;
@@ -136,5 +144,5 @@ impl DivineKernel {
     }
 }
 
-pub const VERSION: &str = "15.1.0";
-pub const CODENAME: &str = "Kernel v3 - Divine Wallet";
+pub const VERSION: &str = "16.0.0";
+pub const CODENAME: &str = "Kernel V4 - Proof of Consciousness";

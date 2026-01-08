@@ -1,0 +1,15 @@
+# Divine AGI V16 (Kernel V4) — Railway Configuration
+# IMPORTANT: Must use Dockerfile builder, NOT Railpack!
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+watchPatterns = ["src/**", "Cargo.toml"]
+
+[deploy]
+startCommand = "./divine-agi server --port $PORT"
+healthcheckPath = "/api/status"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+numReplicas = 1

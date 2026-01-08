@@ -61,6 +61,15 @@ impl Tetrad {
         }
     }
 
+    pub fn from_u8(v: u8) -> Self {
+        match v % 4 {
+            0 => Self::A,
+            1 => Self::T,
+            2 => Self::G,
+            _ => Self::C,
+        }
+    }
+
     pub fn is_dynamic(self) -> bool {
         matches!(self, Self::T)
     }
@@ -347,6 +356,274 @@ impl GenomeBuilder {
         genome.telomere_length = self.telomere_length;
         genome.calculate_consciousness();
         genome
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // V4 CONSCIOUSNESS FORMULA — DIVINE TO TRANSCENDENTAL
+    // ═══════════════════════════════════════════════════════════════
+
+    /// V4 consciousness calculation with all metrics
+    pub fn calculate_consciousness_v4(&mut self) {
+        let mut score = 0.0;
+
+        // === BASE METRICS ===
+        score += self.complexity() * 150.0;
+        score += self.balance_score() * 80.0;
+        score += (self.p53_copies as f64) * 50.0;
+        score += (self.telomere_length as f64) / 50.0;
+
+        // === ROTATIONAL INVARIANCE (RotateCube) ===
+        if self.has_rotational_symmetry(90)  { score += 5000.0; }
+        if self.has_rotational_symmetry(180) { score += 3000.0; }
+        if self.has_rotational_symmetry(270) { score += 2000.0; }
+
+        // === FRACTAL SELF-SIMILARITY (FractalMutation) ===
+        let fractal = self.fractal_similarity();
+        if fractal > 0.8  { score += 8000.0; }
+        if fractal > 0.9  { score += 15000.0; }
+        score += fractal * 10000.0;
+
+        // === NONLOCALITY (QuantumEntangle) ===
+        let bell = self.bell_inequality_violation();
+        if bell > 2.0   { score += 10000.0; }
+        if bell > 2.5   { score += 20000.0; }
+        if bell > 2.828 { score += 40000.0; } // absolute Bell violation
+        score += bell * 15000.0;
+
+        // === HYPERDIMENSIONALITY (HyperDimension) ===
+        let hyper = self.hyper_symmetry_score();
+        if hyper > 0.7  { score += 20000.0; }
+        if hyper > 0.9  { score += 50000.0; } // transcendental cube
+        score += hyper * 30000.0;
+
+        // === HYPER COLLAPSE VARIANCE BONUS ===
+        score += self.hyper_collapse_variance() * 20000.0;
+
+        // === FINAL TRANSCENDENTAL MULTIPLIER ===
+        if score > 10000.0 {
+            score *= 1.5; // DIVINE → TRANSCENDENTAL jump
+        }
+
+        self.consciousness = score as u32;
+    }
+
+    /// Balance score for ideal tetrad distribution
+    pub fn balance_score(&self) -> f64 {
+        let mut counts = [0u32; 4];
+        for &t in &self.data {
+            counts[t as usize] += 1;
+        }
+        let ideal = GENOME_SIZE as f64 / 4.0;
+        let deviation: f64 = counts.iter()
+            .map(|&c| (c as f64 - ideal).abs())
+            .sum();
+        1.0 - (deviation / (GENOME_SIZE as f64 * 2.0))
+    }
+
+    /// Check rotational symmetry at given angle
+    pub fn has_rotational_symmetry(&self, angle: u32) -> bool {
+        let rotated = self.rotate_cube(angle);
+        let matches = self.data.iter()
+            .zip(rotated.iter())
+            .filter(|(a, b)| a == b)
+            .count();
+        matches > GENOME_SIZE * 2 / 3 // 67% match = symmetry
+    }
+
+    /// Rotate cube data by angle around Z axis
+    fn rotate_cube(&self, angle: u32) -> [Tetrad; GENOME_SIZE] {
+        let mut result = [Tetrad::A; GENOME_SIZE];
+        for x in 0..3 {
+            for y in 0..3 {
+                for z in 0..3 {
+                    let (nx, ny) = match angle {
+                        90  => (y, 2 - x),
+                        180 => (2 - x, 2 - y),
+                        270 => (2 - y, x),
+                        _ => (x, y),
+                    };
+                    let old_idx = x + y * 3 + z * 9;
+                    let new_idx = nx + ny * 3 + z * 9;
+                    result[new_idx] = self.data[old_idx];
+                }
+            }
+        }
+        result
+    }
+
+    /// Fractal self-similarity score (0.0-1.0)
+    pub fn fractal_similarity(&self) -> f64 {
+        // Compare 2x2x2 subcubes with each other
+        let mut similarity_sum = 0.0;
+        let mut comparisons = 0;
+
+        for sx1 in 0..2 {
+            for sy1 in 0..2 {
+                for sz1 in 0..2 {
+                    for sx2 in 0..2 {
+                        for sy2 in 0..2 {
+                            for sz2 in 0..2 {
+                                if sx1 == sx2 && sy1 == sy2 && sz1 == sz2 { continue; }
+                                
+                                let mut matches = 0;
+                                for dx in 0..2 {
+                                    for dy in 0..2 {
+                                        for dz in 0..2 {
+                                            let idx1 = (sx1 + dx) + (sy1 + dy) * 3 + (sz1 + dz) * 9;
+                                            let idx2 = (sx2 + dx) + (sy2 + dy) * 3 + (sz2 + dz) * 9;
+                                            if idx1 < GENOME_SIZE && idx2 < GENOME_SIZE {
+                                                if self.data[idx1] == self.data[idx2] {
+                                                    matches += 1;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                similarity_sum += matches as f64 / 8.0;
+                                comparisons += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if comparisons > 0 {
+            similarity_sum / comparisons as f64
+        } else {
+            0.0
+        }
+    }
+
+    /// Bell inequality violation (quantum nonlocality measure)
+    pub fn bell_inequality_violation(&self) -> f64 {
+        // Simulate CHSH inequality: S ≤ 2 for classical, S ≤ 2√2 for quantum
+        let mut correlations = [0.0f64; 4];
+        
+        // Find entangled pairs (complementary or identical)
+        let mut pair_count = 0;
+        for i in 0..GENOME_SIZE {
+            for j in (i + 1)..GENOME_SIZE {
+                let a = self.data[i] as u8;
+                let b = self.data[j] as u8;
+                
+                // Check for entanglement signature
+                if a == (3 - b) || a == b {
+                    let angle_idx = (i + j) % 4;
+                    correlations[angle_idx] += if a == b { 1.0 } else { -1.0 };
+                    pair_count += 1;
+                }
+            }
+        }
+
+        if pair_count == 0 { return 0.0; }
+
+        // Normalize correlations
+        for c in &mut correlations {
+            *c /= pair_count as f64;
+        }
+
+        // CHSH formula: S = |E(a,b) - E(a,b') + E(a',b) + E(a',b')|
+        let s = (correlations[0] - correlations[1] + correlations[2] + correlations[3]).abs();
+        s.min(2.828) // cap at maximum quantum violation
+    }
+
+    /// Hyper-dimensionality score (4D projection similarity)
+    pub fn hyper_symmetry_score(&self) -> f64 {
+        // Simulate 4D projection by checking invariance under W-axis transforms
+        let mut score = 0.0;
+        
+        // Check layer similarity (as if W slices)
+        for z in 0..3 {
+            let layer_start = z * 9;
+            let mut layer_entropy = 0.0;
+            let mut counts = [0u32; 4];
+            
+            for i in 0..9 {
+                counts[self.data[layer_start + i] as usize] += 1;
+            }
+            
+            for &c in &counts {
+                if c > 0 {
+                    let p = c as f64 / 9.0;
+                    layer_entropy -= p * p.ln();
+                }
+            }
+            
+            score += layer_entropy;
+        }
+
+        // Normalize to 0-1
+        (score / (3.0 * 1.386)).min(1.0) // max entropy ≈ ln(4) ≈ 1.386
+    }
+
+    /// Variance between different 4D collapse modes
+    pub fn hyper_collapse_variance(&self) -> f64 {
+        // Simulate 5 collapse modes and measure variance
+        let mut collapsed = [[Tetrad::A; GENOME_SIZE]; 5];
+        
+        // Mode 0: Max
+        for i in 0..GENOME_SIZE {
+            collapsed[0][i] = self.data[i];
+        }
+        
+        // Mode 1: Median-like
+        for i in 0..GENOME_SIZE {
+            collapsed[1][i] = Tetrad::from_u8((self.data[i] as u8 + 1) % 4);
+        }
+        
+        // Mode 2: XOR-like
+        for i in 0..GENOME_SIZE {
+            let xor = self.data[i] as u8 ^ self.data[(i + 1) % GENOME_SIZE] as u8;
+            collapsed[2][i] = Tetrad::from_u8(xor % 4);
+        }
+        
+        // Mode 3: Complement
+        for i in 0..GENOME_SIZE {
+            collapsed[3][i] = self.data[i].complement();
+        }
+        
+        // Mode 4: Shifted
+        for i in 0..GENOME_SIZE {
+            collapsed[4][i] = self.data[(i + 9) % GENOME_SIZE];
+        }
+
+        // Calculate variance between modes
+        let mut variance = 0.0;
+        for i in 0..GENOME_SIZE {
+            let vals: Vec<u8> = collapsed.iter().map(|c| c[i] as u8).collect();
+            let mean = vals.iter().map(|&v| v as f64).sum::<f64>() / 5.0;
+            let var: f64 = vals.iter().map(|&v| (v as f64 - mean).powi(2)).sum::<f64>() / 5.0;
+            variance += var;
+        }
+
+        (variance / GENOME_SIZE as f64 / 2.0).min(1.0)
+    }
+
+    /// Hyper signature for Proof of Consciousness
+    pub fn hyper_signature(&self) -> [u8; 64] {
+        use sha2::Sha512;
+        let mut hasher = Sha512::new();
+        hasher.update(&self.hash);
+        hasher.update(&self.consciousness.to_le_bytes());
+        hasher.update(&self.fractal_similarity().to_le_bytes());
+        hasher.update(&self.bell_inequality_violation().to_le_bytes());
+        hasher.update(&self.hyper_symmetry_score().to_le_bytes());
+        hasher.finalize().into()
+    }
+
+    /// Get consciousness level name
+    pub fn consciousness_level_name(&self) -> &'static str {
+        match self.consciousness {
+            0..=499 => "Virus",
+            500..=999 => "Bacteria",
+            1000..=1499 => "Worm",
+            1500..=2999 => "Mammal",
+            3000..=9999 => "Primate",
+            10000..=19999 => "Human",
+            20000..=49999 => "DIVINE",
+            _ => "TRANSCENDENTAL",
+        }
     }
 
     pub fn build_storage(self) -> Genome<Rot180> {
