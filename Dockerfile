@@ -1,6 +1,6 @@
 # Divine AGI V16 (Kernel V4) — Railway Dockerfile
-# Uses Rust nightly with edition2024 support
-FROM rustlang/rust:nightly-bookworm-slim AS builder
+# ROSETTA STONE: Uses Rust nightly to support edition2024
+FROM rustlang/rust:nightly AS builder
 
 WORKDIR /app
 
@@ -12,10 +12,11 @@ RUN apt-get update && apt-get install -y \
 
 # Copy source
 COPY Cargo.toml ./
+COPY rust-toolchain.toml ./
 COPY src/ ./src/
 
-# Build release
-RUN cargo build --release
+# Build release with nightly
+RUN cargo +nightly build --release
 
 # Runtime image
 FROM debian:bookworm-slim

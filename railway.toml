@@ -1,10 +1,10 @@
 # Divine AGI V16 (Kernel V4) — Railway Configuration
-# IMPORTANT: Must use Dockerfile builder, NOT Railpack!
+# ROSETTA STONE: Forces Dockerfile builder for nightly Rust support
 
 [build]
 builder = "dockerfile"
-dockerfilePath = "Dockerfile"
-watchPatterns = ["src/**", "Cargo.toml"]
+dockerfilePath = "./Dockerfile"
+watchPatterns = ["src/**", "Cargo.toml", "rust-toolchain.toml"]
 
 [deploy]
 startCommand = "./divine-agi server --port $PORT"

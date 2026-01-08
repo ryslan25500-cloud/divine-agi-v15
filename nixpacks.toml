@@ -1,0 +1,17 @@
+# Nixpacks configuration for Railway
+# Forces nightly Rust to support edition2024
+
+[phases.setup]
+nixPkgs = ["rustup"]
+
+[phases.install]
+cmds = [
+    "rustup default nightly",
+    "rustup update nightly"
+]
+
+[phases.build]
+cmds = ["cargo build --release"]
+
+[start]
+cmd = "./target/release/divine-agi server --port ${PORT:-8080}"
